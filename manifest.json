@@ -13,13 +13,8 @@
 	},
 	"content_scripts": [
 		{
-			"matches": ["http://www.cybernations.net/*"],
-			"js": ["scripts/jquery.js", "se.js"],
-			"run_at": "document_end"
-		},
-		{
-			"matches": ["http://tournament.cybernations.net/*"],
-			"js": ["scripts/jquery.js", "te.js"],
+			"matches": ["http://*.cybernations.net/*"],
+			"js": ["jquery.js", "cs.js"],
 			"run_at": "document_end"
 		}
 	],
