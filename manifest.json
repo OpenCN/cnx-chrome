@@ -1,0 +1,28 @@
+{
+	"name": "CNExtend",
+	"version": "1.0",
+	"description": "CNX!",
+	"icons": {
+		"32": "icons/32.png",
+		"48": "icons/48.png",
+		"128": "icons/128.png"
+	},
+	"page_action": {
+		"default_icon": "icons/19.png",
+		"default_title": "CNExtend"
+	},
+	"content_scripts": [
+		{
+			"matches": ["http://www.cybernations.net/*"],
+			"js": ["scripts/jquery.js", "se.js"],
+			"run_at": "document_end"
+		},
+		{
+			"matches": ["http://tournament.cybernations.net/*"],
+			"js": ["scripts/jquery.js", "te.js"],
+			"run_at": "document_end"
+		}
+	],
+	"permissions": ["http://*.cybernations.net/*", "tabs"],
+	"background_page": "background.html"
+}
