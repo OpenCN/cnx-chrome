@@ -11,13 +11,11 @@
 		"default_icon": "icons/19.png",
 		"default_title": "CNExtend"
 	},
-	"content_scripts": [
-		{
-			"matches": ["http://*.cybernations.net/*"],
-			"js": ["jquery.js", "cs.js"],
-			"run_at": "document_end"
-		}
-	],
-	"permissions": ["http://*.cybernations.net/*", "tabs"],
+	"content_scripts": [{
+		"matches": ["http://*.cybernations.net/*"],
+		"js": ["jquery.js", "cs.js"],
+		"run_at": "document_end"
+	}],
+	"permissions": ["tabs"],
 	"background_page": "background.html"
 }
