@@ -1,0 +1,37 @@
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript">
+var cnx = {
+	data: {
+		se: null,
+		te: null,
+		get: function(path, v){
+			var o = cnx.data[v], pa = path.split(".");
+			pa.forEach(function(k){ o = o[k]; });
+			return o;
+		},
+		set: function(path, val, v){
+			var o = cnx.data[v], pa = path.split("."), l = pa.pop();
+			pa.forEach(function(k){ o = o[k]; });
+			o[l] = val;
+			localStorage[v] = JSON.stringify(cnx.data[v]);
+		}
+	}
+};
+
+chrome.extension.onRequest.addListener(function(r, sender, send){
+	if ("get" in r) {
+		send(cnx.data.get(r.get, r.v));
+	} else if ("set" in r) {
+		cnx.data.set(r.set, r.val, r.v);
+		send(true);
+	}
+});
+
+(function(){
+	var base = '{"nation_data":{"date":0, "isStale":true}}';
+	cnx.data.se = JSON.parse(localStorage.se || base);
+	cnx.data.te = JSON.parse(localStorage.te || base);
+})();
+
+$.getJSON("data/rows.json", function(j){ cnx.data.rows = { rows: j }; });
+</script>
