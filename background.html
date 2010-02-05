@@ -5,15 +5,20 @@ var cnx = {
 		se: null,
 		te: null,
 		get: function(path, v){
-			var o = cnx.data[v], pa = path.split(".");
+			var o = cnx.data, pa = path.split(".");
+			if (v) { o = o[v]; }
 			pa.forEach(function(k){ o = o[k]; });
 			return o;
 		},
 		set: function(path, val, v){
-			var o = cnx.data[v], pa = path.split("."), l = pa.pop();
-			pa.forEach(function(k){ o = o[k]; });
-			o[l] = val;
-			localStorage[v] = JSON.stringify(cnx.data[v]);
+			if (v) {
+				var o = cnx.data[v], pa = path.split("."), l = pa.pop();
+				pa.forEach(function(k){ o = o[k]; });
+				o[l] = val;
+				localStorage[v] = JSON.stringify(cnx.data[v]);
+			} else {
+				cnx.data[path] = val;
+			}
 		}
 	}
 };
@@ -33,5 +38,5 @@ chrome.extension.onRequest.addListener(function(r, sender, send){
 	cnx.data.te = JSON.parse(localStorage.te || base);
 })();
 
-$.getJSON("data/rows.json", function(j){ cnx.data.rows = { rows: j }; });
+$.getJSON("data/rows.json", function(j){ cnx.data.rows = j; });
 </script>
