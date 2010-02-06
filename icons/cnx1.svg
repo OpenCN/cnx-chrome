@@ -14,10 +14,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.47 r22583"
-   inkscape:export-filename="C:\temp\temp.png"
-   inkscape:export-xdpi="11.25"
-   inkscape:export-ydpi="11.25"
-   sodipodi:docname="New document 1">
+   inkscape:export-filename="C:\CNX\cnx-chrome\icons\19.png"
+   inkscape:export-xdpi="13.359375"
+   inkscape:export-ydpi="13.359375"
+   sodipodi:docname="cnx1.svg">
   <defs
      id="defs4">
     <inkscape:perspective
@@ -35,7 +35,7 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.88250241"
+     inkscape:zoom="2.2717543"
      inkscape:cx="64"
      inkscape:cy="64"
      inkscape:document-units="px"
@@ -69,15 +69,15 @@
      transform="translate(0,-924.36218)">
     <text
        xml:space="preserve"
-       style="font-size:70.53645325px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:80.00000119%;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Garamond;-inkscape-font-specification:Bitstream Vera Sans Bold"
-       x="777.11639"
-       y="708.57751"
+       style="font-size:68.26108551px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:80.00000119%;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Garamond;-inkscape-font-specification:Bitstream Vera Sans Bold"
+       x="774.17389"
+       y="707.84595"
        id="text3603"
        sodipodi:linespacing="80.000001%"
        transform="matrix(0.74202271,0.67383383,-0.74202271,0.67383383,0,0)"><tspan
          sodipodi:role="line"
-         x="777.11639"
-         y="708.57751"
+         x="774.17389"
+         y="707.84595"
          id="tspan3762">CNx</tspan></text>
   </g>
 </svg>

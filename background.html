@@ -33,7 +33,11 @@ chrome.extension.onRequest.addListener(function(r, sender, send){
 });
 
 chrome.tabs.onUpdated.addListener(function(id, changeinfo, tab){
-	if (/^http:\/\/(?:www|tournament)\.cybernations\.net/i.test(tab.url)) { chrome.pageAction.show(id); }
+	var m = tab.url.match(/^http:\/\/(www|tournament)\.cybernations\.net/i);
+	if (m) {
+		chrome.pageAction.setIcon({ tabId: id, path: "icons/19-" + (m[1] === "www" ? "se" : "te") + ".png" });
+		chrome.pageAction.show(id);
+	}
 });
 
 (function(){

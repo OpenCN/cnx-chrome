@@ -11,7 +11,8 @@
 	},
 	"page_action": {
 		"default_icon": "icons/19.png",
-		"default_title": "CNExtend"
+		"default_title": "CNExtend",
+		"popup": "popup.html"
 	},
 	"content_scripts": [{
 		"matches": ["http://*.cybernations.net/*"],
