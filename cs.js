@@ -22,6 +22,8 @@ switch (window.location.pathname.toLowerCase()) {
 				}
 			});
 			
+			cnx.table = table;
+			
 			var data = {
 				date: Date.now(),
 				isStale: false,
@@ -30,14 +32,14 @@ switch (window.location.pathname.toLowerCase()) {
 				name: table.name,
 				modifiers: null,
 				gov: null,
-				land: null
+				land: (function(m){
+					return { total: parseFloat(m[0]), purchases: parseFloat(m[1]), modifiers: parseFloat(m[2]), growth: parseFloat(m[3]) };
+				})(table.land.replace(/,/g, "").match(/-?[\d][\d\.]+/g))
 			};
 			"citizens citizen_tax tax environment infra tech strength global_radiation num_soldiers happiness nukes".split(" ").forEach(function(v){
 				data[v] = parseFloat(table[v].match(/-?[\d,]+(?:\.\d+)?/)[0].replace(",", ""));
 			});
 			chrome.extension.sendRequest({ set: "nation_data", val: data, v: cnx.isTE ? "te" : "se" });
-			
-			cnx.table = table;
 		});
 		
 		break;

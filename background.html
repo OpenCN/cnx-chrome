@@ -32,6 +32,10 @@ chrome.extension.onRequest.addListener(function(r, sender, send){
 	}
 });
 
+chrome.tabs.onUpdated.addListener(function(id, changeinfo, tab){
+	if (/^http:\/\/(?:www|tournament)\.cybernations\.net/i.test(tab.url)) { chrome.pageAction.show(id); }
+});
+
 (function(){
 	var base = '{"nation_data":{"date":0, "isStale":true}}';
 	cnx.data.se = JSON.parse(localStorage.se || base);
