@@ -9,12 +9,13 @@ switch (window.location.pathname.toLowerCase()) {
 		if (!(new RegExp("nation_id=" + cnx.id, "i")).test(window.location.search)) { break; }
 		
 		chrome.extension.sendRequest({ get: "rows" }, function(rows){
-			var table = {}, $tr = $(".shadetabs + table > tbody > tr"), trp = 0;
+			/*** scrape data ***/
+			var table = {}, $tr = $(".shadetabs + table > tbody > tr"), trp = 0, spaces = /\s/g;
 			
 			$.each(rows, function(id, r){
 				var $td = $tr.eq(trp).children(), k = $td.eq(0).text(), v = $td.eq(1).text().trim() || ($td.eq(1).html() || "").trim() || $td.eq(0).text();
 				
-				if (r.is === k.replace(/\s/g, "") || k.indexOf(r.has) !== -1) {
+				if (r.is === k.replace(spaces, "") || k.indexOf(r.has) !== -1) {
 					table[id] = v;
 					trp++;
 				} else {
@@ -24,21 +25,37 @@ switch (window.location.pathname.toLowerCase()) {
 			
 			cnx.table = table;
 			
+			/*** save data ***/
 			var data = {
 				date: Date.now(),
 				isStale: false,
 				id: cnx.id,
 				ruler: table.ruler,
 				name: table.name,
-				modifiers: null,
-				gov: null,
+				gov: table.gov.match(/^(Anarchy|Capitalist|Communist|Democracy|Dictatorship|Federal|Monarchy|Republic|Revolutionary|Totalitarian|Transitional)/)[1],
+				wonders: table.wonders.split(", "),
+				
 				land: (function(m){
-					return { total: parseFloat(m[0]), purchases: parseFloat(m[1]), modifiers: parseFloat(m[2]), growth: parseFloat(m[3]) };
-				})(table.land.replace(/,/g, "").match(/-?[\d][\d\.]+/g))
+					return { total: m[0]/1, purchases: m[1]/1, modifiers: m[2]/1, growth: m[3]/1 };
+				})(table.land.replace(/,/g, "").match(/-?[\d][\d\.]+/g)),
+				
+				improvements: (function(i, a){
+					a.forEach(function(v){ var s = v.split(": "); i[s[0]] = s[1]/1; });
+					return i;
+				})({}, table.improvements.split(", ")),
+				
+				resources: (function(resources, regexp){
+					$(table.connected_resources + table.bonus_resources).each(function(){
+						resources.push(this.title.match(regexp)[0]);
+					});
+					return resources;
+				})([], /^[a-z]+/i)
 			};
+			
 			"citizens citizen_tax tax environment infra tech strength global_radiation num_soldiers happiness nukes".split(" ").forEach(function(v){
-				data[v] = parseFloat(table[v].match(/-?[\d,]+(?:\.\d+)?/)[0].replace(",", ""));
-			});
+				data[v] = table[v].match(this)[0].replace(",", "")/1;
+			}, /-?[\d,]+(?:\.\d+)?/);
+			
 			chrome.extension.sendRequest({ set: "nation_data", val: data, v: cnx.isTE ? "te" : "se" });
 		});
 		
