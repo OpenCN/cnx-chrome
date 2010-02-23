@@ -1,9 +1,10 @@
 <script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="data/defaults.js"></script>
 <script type="text/javascript">
 var cnx = {
 	data: {
-		se: null,
-		te: null,
+		se: JSON.parse(localStorage.se),
+		te: JSON.parse(localStorage.te),
 		get: function(path, v){
 			var o = cnx.data, pa = path.split(".");
 			if (v) { o = o[v]; }
@@ -39,12 +40,6 @@ chrome.tabs.onUpdated.addListener(function(id, changeinfo, tab){
 		chrome.pageAction.show(id);
 	}
 });
-
-(function(){
-	var base = '{"nation_data":{"date":0, "isStale":true}}';
-	cnx.data.se = JSON.parse(localStorage.se || base);
-	cnx.data.te = JSON.parse(localStorage.te || base);
-})();
 
 $.getJSON("data/rows.json", function(j){ cnx.data.rows = j; });
 </script>
