@@ -1,0 +1,18 @@
+{
+	"Aluminum": { "infraCost": -0.07 },
+	"Asphalt": { "infraBills": -0.05 },
+	"Cattle": { "citizens": 0.05 },
+	"Coal": { "infraCost": -0.04, "land": 0.15 },
+	"Construction": { "infraCost": -0.05 },
+	"Fish": { "citizens": 0.08 },
+	"Iron": { "infraBills": -0.1, "infraCost": -0.05 },
+	"Lumber": { "infraBills": -0.08, "infraCost": -0.06 },
+	"Marble": { "infraCost": -0.1 },
+	"Pigs": { "citizens": 0.035 },
+	"Rubber": { "infraCost": -0.03, "land": 0.2 },
+	"Spices": { "land": 0.08 },
+	"Steel": { "infraCost": -0.02 },
+	"Sugar": { "citizens": 0.03 },
+	"Uranium": { "infraBills": -0.03 },
+	"Wheat": { "citizens": 0.08 }
+}

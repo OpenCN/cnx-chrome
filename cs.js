@@ -1,25 +1,27 @@
+(function(window, $, chrome, undefined){
+
 var cnx = {
-	id: $("a[title='View your nation']").attr("href").match(/\d+$/)[0],
+	id: (($("a[title='View your nation']").attr("href") || "").match(/\d+$/) || "")[0],
 	isTE: window.location.hostname === "tournament.cybernations.net",
 	isExtended: /extended=1/i.test(window.location.search)
 };
 
 switch (window.location.pathname.toLowerCase()) {
 	case "/nation_drill_display.asp": {
-		if (!(new RegExp("nation_id=" + cnx.id, "i")).test(window.location.search)) { break; }
+		if (!(RegExp("nation_id=" + cnx.id, "i")).test(window.location.search)) { break; }
 		
 		chrome.extension.sendRequest({ get: "rows" }, function(rows){
 			/*** scrape data ***/
-			var table = {}, $tr = $(".shadetabs + table > tbody > tr"), trp = 0, spaces = /\s/g;
+			var table = {}, $tr = $(".shadetabs + table > tbody > tr"), trp = 0;
 			
 			$.each(rows, function(id, r){
 				var $td = $tr.eq(trp).children(), k = $td.eq(0).text(), v = $td.eq(1).text().trim() || ($td.eq(1).html() || "").trim() || $td.eq(0).text();
 				
-				if (r.is === k.replace(spaces, "") || k.indexOf(r.has) !== -1) {
+				if (r.is === k.replace(/\s/g, "") || k.indexOf(r.has) !== -1) {
 					table[id] = v;
 					trp++;
 				} else {
-					return true;
+					return;
 				}
 			});
 			
@@ -32,8 +34,8 @@ switch (window.location.pathname.toLowerCase()) {
 				id: cnx.id,
 				ruler: table.ruler,
 				name: table.name,
-				gov: table.gov.match(/^(Anarchy|Capitalist|Communist|Democracy|Dictatorship|Federal|Monarchy|Republic|Revolutionary|Totalitarian|Transitional)/)[1],
-				wonders: table.wonders.split(", "),
+				gov: table.gov.match(/^(.+?)\s/)[1],
+				wonders: table.wonders !== "No national wonders." ? table.wonders.split(", ") : [],
 				
 				land: (function(m){
 					return { total: m[0]/1, purchases: m[1]/1, modifiers: m[2]/1, growth: m[3]/1 };
@@ -52,9 +54,11 @@ switch (window.location.pathname.toLowerCase()) {
 				})([], /^[a-z]+/i)
 			};
 			
-			"citizens citizen_tax tax environment infra tech strength global_radiation num_soldiers happiness nukes".split(" ").forEach(function(v){
-				data[v] = table[v].match(this)[0].replace(",", "")/1;
+			["citizens", "citizen_tax", "tax", "environment", "infra", "tech", "strength", "global_radiation", "num_soldiers", "happiness", "nukes"].forEach(function(v){
+				data[v] = table[v].match(this)[0].replace(/,/g, "")/1;
 			}, /-?[\d,]+(?:\.\d+)?/);
+			
+			data.tax /= 100;
 			
 			chrome.extension.sendRequest({ set: "nation_data", val: data, v: cnx.isTE ? "te" : "se" });
 		});
@@ -74,3 +78,5 @@ switch (window.location.pathname.toLowerCase()) {
 		break;
 	}
 }
+
+})(this, this.$, this.chrome);
