@@ -15,7 +15,7 @@ switch (window.location.pathname.toLowerCase()) {
 			var table = {}, $tr = $(".shadetabs + table > tbody > tr"), trp = 0;
 			
 			$.each(rows, function(id, r){
-				var $td = $tr.eq(trp).children(), k = $td.eq(0).text(), v = $td.eq(1).text().trim() || ($td.eq(1).html() || "").trim() || $td.eq(0).text();
+				var $td = $tr.eq(trp).children(), k = 0 in $td ? $td[0].innerText : "", v = 1 in $td ? ($td[1].innerText.trim() || $td[1].innerHTML.trim()) : k;
 				
 				if (r.is === k.replace(/\s/g, "") || k.indexOf(r.has) !== -1) {
 					table[id] = v;
