@@ -5,30 +5,28 @@ var cnx = {
 	data: {
 		se: JSON.parse(localStorage.se),
 		te: JSON.parse(localStorage.te),
-		get: function(path, ver){
-			var o = cnx.data, pa = path.split(".");
-			if (ver) { o = o[ver]; }
-			pa.forEach(function(k){ o = o[k]; });
-			return o;
+		get: function(path){
+			var obj = cnx.data;
+			path.forEach(function(k){ obj = obj[k]; });
+			return obj;
 		},
-		set: function(path, val, ver){
-			if (ver) {
-				var o = cnx.data[ver], pa = path.split("."), l = pa.pop();
-				pa.forEach(function(k){ o = o[k]; });
-				o[l] = val;
-				localStorage[ver] = JSON.stringify(cnx.data[ver]);
-			} else {
-				cnx.data[path] = val;
-			}
+		set: function(path, val){
+			var obj = cnx.data, first = path[0], last = path.pop();
+			path.forEach(function(k){ obj = obj[k]; });
+			obj[last] = val;
+			
+			if (first === "se" || first === "te") { localStorage[first] = JSON.stringify(cnx.data[first]); }
 		}
 	}
 };
 
+$.getJSON("data/rows.json", function(j){ cnx.data.rows = j; });
+
 chrome.extension.onRequest.addListener(function(req, sender, send){
 	if ("get" in req) {
-		send(cnx.data.get(req.get, req.ver));
+		send(cnx.data.get(req.get));
 	} else if ("set" in req) {
-		cnx.data.set(req.set, req.val, req.ver);
+		cnx.data.set(req.set, req.val);
 		send(true);
 	}
 });
@@ -40,6 +38,4 @@ chrome.tabs.onUpdated.addListener(function(id, changeinfo, tab){
 		chrome.pageAction.show(id);
 	}
 });
-
-$.getJSON("data/rows.json", function(j){ cnx.data.rows = j; });
 </script>

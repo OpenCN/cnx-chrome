@@ -2,7 +2,7 @@
 
 var cnx = {
 	id: (($("a[title='View your nation']").attr("href") || "").match(/\d+$/) || "")[0],
-	isTE: window.location.hostname === "tournament.cybernations.net",
+	ver: window.location.hostname === "www.cybernations.net" ? "se" : "te",
 	isExtended: /extended=1/i.test(window.location.search)
 };
 
@@ -10,7 +10,7 @@ switch (window.location.pathname.toLowerCase()) {
 	case "/nation_drill_display.asp": {
 		if (!(RegExp("nation_id=" + cnx.id, "i")).test(window.location.search)) { break; }
 		
-		chrome.extension.sendRequest({ get: "rows" }, function(rows){
+		chrome.extension.sendRequest({ get: ["rows"] }, function(rows){
 			/*** scrape data ***/
 			var table = {}, $tr = $(".shadetabs + table > tbody > tr"), trp = 0;
 			
@@ -58,7 +58,7 @@ switch (window.location.pathname.toLowerCase()) {
 			
 			data.tax /= 100;
 			
-			chrome.extension.sendRequest({ set: "nation_data", val: data, ver: cnx.isTE ? "te" : "se" });
+			chrome.extension.sendRequest({ set: [cnx.ver, "nation_data"], val: data });
 		});
 		
 		break;
@@ -72,7 +72,7 @@ switch (window.location.pathname.toLowerCase()) {
 	case "/technology_purchase.asp":
 	case "/infrastructurebuysell.asp":
 	case "/militarybuysell.asp": {
-		chrome.extension.sendRequest({ set: "nation_data.isStale", val: true, ver: cnx.isTE ? "te" : "se" });
+		chrome.extension.sendRequest({ set: [cnx.ver, "nation_data", "isStale"], val: true });
 		break;
 	}
 }
