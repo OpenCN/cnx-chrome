@@ -37,30 +37,28 @@ switch (window.location.pathname.toLowerCase()) {
 				gov: table.gov.match(/^(.+?)\s/)[1],
 				wonders: table.wonders !== "No national wonders." ? table.wonders.split(", ") : [],
 				
-				land: (function(m){
-					return { total: m[0]/1, purchases: m[1]/1, modifiers: m[2]/1, growth: m[3]/1 };
+				improvements: table.improvements.split(", ").reduce(function(pre, cur){
+					var s = cur.split(": ");
+					pre[s[0]] = s[1]/1;
+					return pre;
+				}, {}),
+				
+				land: (function(land){
+					return { total: land[0]/1, purchases: land[1]/1, modifiers: land[2]/1, growth: land[3]/1 };
 				})(table.land.replace(/,/g, "").match(/-?[\d][\d\.]+/g)),
 				
-				improvements: (function(i, a){
-					a.forEach(function(v){ var s = v.split(": "); i[s[0]] = s[1]/1; });
-					return i;
-				})({}, table.improvements.split(", ")),
-				
-				resources: (function(resources, regexp){
-					$(table.connected_resources + table.bonus_resources).each(function(){
-						resources.push(this.title.match(regexp)[0]);
-					});
-					return resources;
-				})([], /^[a-z]+/i)
+				resources: $(table.connected_resources + table.bonus_resources).get().map(function(elem){
+					return elem.title.match(/^(.+?)\s-/)[1];
+				})
 			};
 			
-			["citizens", "citizen_tax", "tax", "environment", "infra", "tech", "strength", "global_radiation", "num_soldiers", "happiness", "nukes"].forEach(function(v){
-				data[v] = table[v].match(this)[0].replace(/,/g, "")/1;
+			["citizens", "citizen_tax", "tax", "environment", "infra", "tech", "strength", "global_radiation", "num_soldiers", "happiness", "nukes"].forEach(function(val){
+				data[val] = table[val].match(this)[0].replace(/,/g, "")/1;
 			}, /-?[\d,]+(?:\.\d+)?/);
 			
 			data.tax /= 100;
 			
-			chrome.extension.sendRequest({ set: "nation_data", val: data, v: cnx.isTE ? "te" : "se" });
+			chrome.extension.sendRequest({ set: "nation_data", val: data, ver: cnx.isTE ? "te" : "se" });
 		});
 		
 		break;
@@ -68,13 +66,13 @@ switch (window.location.pathname.toLowerCase()) {
 	
 	case "/improvements_purchase.asp":
 	case "/national_wonders_purchase.asp": {
-		break;
+		
 	}
 	
 	case "/technology_purchase.asp":
 	case "/infrastructurebuysell.asp":
 	case "/militarybuysell.asp": {
-		chrome.extension.sendRequest({ set: "nation_data.isStale", val: true, v: cnx.isTE ? "te" : "se" });
+		chrome.extension.sendRequest({ set: "nation_data.isStale", val: true, ver: cnx.isTE ? "te" : "se" });
 		break;
 	}
 }

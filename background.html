@@ -5,18 +5,18 @@ var cnx = {
 	data: {
 		se: JSON.parse(localStorage.se),
 		te: JSON.parse(localStorage.te),
-		get: function(path, v){
+		get: function(path, ver){
 			var o = cnx.data, pa = path.split(".");
-			if (v) { o = o[v]; }
+			if (ver) { o = o[ver]; }
 			pa.forEach(function(k){ o = o[k]; });
 			return o;
 		},
-		set: function(path, val, v){
-			if (v) {
-				var o = cnx.data[v], pa = path.split("."), l = pa.pop();
+		set: function(path, val, ver){
+			if (ver) {
+				var o = cnx.data[ver], pa = path.split("."), l = pa.pop();
 				pa.forEach(function(k){ o = o[k]; });
 				o[l] = val;
-				localStorage[v] = JSON.stringify(cnx.data[v]);
+				localStorage[ver] = JSON.stringify(cnx.data[ver]);
 			} else {
 				cnx.data[path] = val;
 			}
@@ -24,19 +24,19 @@ var cnx = {
 	}
 };
 
-chrome.extension.onRequest.addListener(function(r, sender, send){
-	if ("get" in r) {
-		send(cnx.data.get(r.get, r.v));
-	} else if ("set" in r) {
-		cnx.data.set(r.set, r.val, r.v);
+chrome.extension.onRequest.addListener(function(req, sender, send){
+	if ("get" in req) {
+		send(cnx.data.get(req.get, req.ver));
+	} else if ("set" in req) {
+		cnx.data.set(req.set, req.val, req.ver);
 		send(true);
 	}
 });
 
 chrome.tabs.onUpdated.addListener(function(id, changeinfo, tab){
-	var m = tab.url.match(/^http:\/\/(www|tournament)\.cybernations\.net/i);
-	if (m) {
-		chrome.pageAction.setIcon({ tabId: id, path: "icons/19-" + (m[1] === "www" ? "se" : "te") + ".png" });
+	var cn = tab.url.match(/^http:\/\/(www|tournament)\.cybernations\.net/i);
+	if (cn) {
+		chrome.pageAction.setIcon({ tabId: id, path: "icons/19-" + (cn[1] === "www" ? "se" : "te") + ".png" });
 		chrome.pageAction.show(id);
 	}
 });
