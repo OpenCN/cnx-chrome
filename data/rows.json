@@ -1,5 +1,5 @@
 {
-	"nav": { "has": "Nation Info |", "name": "Navigation Row" },
+	"nav": { "has": "Nation Info |", "name": "Navigation" },
 	"info-h": { "is": "_:.NationInformation", "name": "Nation Information Header" },
 	"info": { "has": "Its citizens", "name": "Nation Information" },
 	"messages-h": { "is": "_:.PrivateNationMessages", "name": "Nation Messages Header" },
@@ -41,7 +41,7 @@
 	"global_radiation": { "is": "GlobalRadiation:", "name": "Global Radiation" },
 	"votes": { "is": "SenateVotes:", "name": "Senate Votes" },
 	
-	"military": { "is": "_:.MilitaryInformation", "name": "Military Header" },
+	"military-h": { "is": "_:.MilitaryInformation", "name": "Military Header" },
 	"rank": { "is": "NationRank:", "name": "Nation Rank" },
 	"strength": { "is": "NationStrength:", "name": "Nation Strength" },
 	"efficiency": { "is": "Efficiency:", "name": "Efficiency" },
@@ -66,13 +66,13 @@
 	"ethnicity": { "is": "PrimaryEthnicGroup:", "name": "Ethnicity" },
 	"happiness": { "is": "PopulationHappiness:", "name": "Happiness" },
 	"ppm": { "is": "PopulationPerMile:", "name": "Population Density" },
-	"num_soldiers-2": { "is": "MilitaryPersonnel:Citizens:", "name": "Soldiers" },
+	"num_soldiers2": { "is": "MilitaryPersonnel:Citizens:", "name": "Soldiers" },
 	"citizens": { "has": "Working Citizens", "name": "Population" },
 	"citizen_gross": { "is": "Avg.GrossIncomePerIndividualPerDay:", "name": "Citizen Gross Income" },
 	"citizen_tax": { "is": "Avg.IndividualIncomeTaxesPaidPerDay", "name": "Citizen Taxes Paid" },
 	"citizen_net": { "is": "Avg.NetDailyPopulationIncome(AfterTaxes)", "name": "Citizen Net Income" },
 	
-	"financial": { "is": "_:.GovernmentFinancial", "name": "Financial Header" },
+	"financial-h": { "is": "_:.GovernmentFinancial", "name": "Financial Header" },
 	"total_taxes": { "is": "TotalIncomeTaxesCollected:", "name": "Total Taxes Collected" },
 	"total_expenses": { "is": "TotalExpensesOverTime:", "name": "Total Expenses" },
 	"total_bills": { "is": "BillsPaid:PurchasesOverTime:", "name": "Total Bills Paid" },

@@ -1,0 +1,27 @@
+[
+	"nav",
+	"messages-h",
+	"messages",
+	"actions",
+	
+	"!Status",
+	"cash",
+	"infra",
+	"tech",
+	"defcon",
+	"threat",
+	
+	"!Defense",
+	"citizens",
+	"def_soldiers",
+	"def_tanks",
+	
+	"!Offense",
+	"dep_soldiers",
+	"dep_tanks",
+	"aircraft",
+	"cruise_missiles",
+	"navy",
+	"nukes",
+	"spies"
+]

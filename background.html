@@ -1,8 +1,13 @@
 <script src="jquery.js"></script>
+<script src="scripts/utils.js"></script>
 <script src="data/defaults.js"></script>
 <script>
 var cnx = {
 	data: {
+		layouts: {
+			war: JSON.parse(utils.getFile("data/layouts/war.json"))
+		},
+		rows: JSON.parse(utils.getFile("data/rows.json")),
 		se: JSON.parse(localStorage.se),
 		te: JSON.parse(localStorage.te),
 		get: function(path){
@@ -20,14 +25,12 @@ var cnx = {
 	}
 };
 
-$.getJSON("data/rows.json", function(j){ cnx.data.rows = j; });
-
 chrome.extension.onRequest.addListener(function(req, sender, send){
 	if ("get" in req) {
 		send(cnx.data.get(req.get));
 	} else if ("set" in req) {
 		cnx.data.set(req.set, req.val);
-		send(true);
+		send(null);
 	}
 });
 
