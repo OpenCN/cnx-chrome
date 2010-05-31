@@ -2,13 +2,15 @@
 
 var cnx = {
 	id: (($("a[title='View your nation']").attr("href") || "").match(/\d+$/) || "")[0],
-	ver: window.location.hostname === "www.cybernations.net" ? "se" : "te",
-	isExtended: /extended=1/i.test(window.location.search)
+	ver: window.location.hostname === "www.cybernations.net" ? "se" : "te"
 };
 
 switch (window.location.pathname.toLowerCase()) {
 	case "/nation_drill_display.asp": {
-		if (!(RegExp("nation_id=" + cnx.id, "i")).test(window.location.search)) { break; }
+		if (!(RegExp("nation_id=" + cnx.id, "i")).test(window.location.search)) {
+			$(".shadetabs + table > tbody").show();
+			break;
+		}
 		
 		chrome.extension.sendRequest({ get: ["rows"] }, function(rows){
 			/*** scrape data ***/
@@ -23,8 +25,6 @@ switch (window.location.pathname.toLowerCase()) {
 					row.td = $tr[trp];
 					rows[id] = row;
 					trp++;
-				} else {
-					return;
 				}
 			});
 			
@@ -64,15 +64,16 @@ switch (window.location.pathname.toLowerCase()) {
 			chrome.extension.sendRequest({ set: [cnx.ver, "nation_data"], val: data });
 			
 			/*** display data ***/
-			$tr.remove();
 			chrome.extension.sendRequest({ get: ["layouts", "war"] }, function(list){
+				var $ntable = $("<tbody/>");
 				list.forEach(function(id){
-					if (id[0] !== "!") {
-						$table.append(rows[id].td);
+					if (id in rows) {
+						$ntable.append(rows[id].td);
 					} else {
-						$table.append('<tr><td colspan="2" bgcolor="#000080" style="color:white"><b>_:. foo</b></td></tr>');
+						$ntable.append('<tr><td colspan="2" style="color:white;background-color:navy"><b><span style="opacity:0">_</span>:. ' + id + '</b></td></tr>');
 					}
 				});
+				$ntable.replaceAll($table).show();
 			});
 		});
 		

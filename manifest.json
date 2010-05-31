@@ -13,7 +13,11 @@
 		"popup": "popup.html"
 	},
 	"content_scripts": [{
-		"matches": ["http://www.cybernations.net/*", "http://tournament.cybernations.net/*"],
+		"matches": ["http://*.cybernations.net/nation_drill_display.asp?*"],
+		"css": ["nation.css"],
+		"run_at": "document_start"
+	}, {
+		"matches": ["http://*.cybernations.net/*"],
 		"js": ["jquery.js", "cs.js"],
 		"run_at": "document_end"
 	}],
