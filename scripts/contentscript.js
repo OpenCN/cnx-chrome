@@ -1,8 +1,8 @@
 (function(window, $, chrome, undefined){
 
 var cnx = {
-	id: (($("a[title='View your nation']").attr("href") || "").match(/\d+$/) || "")[0],
-	ver: window.location.hostname === "www.cybernations.net" ? "se" : "te"
+	id: (($("a[data-popupmenu='popmenu3']").attr("href") || "").match(/\d+$/) || "")[0],
+	edn: window.location.hostname === "www.cybernations.net" ? "se" : "te"
 };
 
 switch (window.location.pathname.toLowerCase()) {
@@ -14,7 +14,7 @@ switch (window.location.pathname.toLowerCase()) {
 		
 		chrome.extension.sendRequest({ get: ["rows"] }, function(rows){
 			/*** scrape data ***/
-			var $table = $(".shadetabs + table > tbody"), $tr = $table.children("tr"), trp = 0;
+			var $table = $(".shadetabs + table > tbody"), $tr = $table.children(), trp = 0;
 			
 			$.each(rows, function(id, row){
 				var $td = $tr.eq(trp).children(), k = 0 in $td ? $td[0].innerText : "", txt = 1 in $td ? $td[1].innerText.trim() : k, html = 1 in $td ? $td[1].innerHTML.trim() : k;
@@ -61,10 +61,10 @@ switch (window.location.pathname.toLowerCase()) {
 			
 			data.tax /= 100;
 			
-			chrome.extension.sendRequest({ set: [cnx.ver, "nation_data"], val: data });
+			chrome.extension.sendRequest({ set: [cnx.edn, "nation_data"], val: data });
 			
 			/*** display data ***/
-			chrome.extension.sendRequest({ get: ["layouts", "war"] }, function(list){
+			/*chrome.extension.sendRequest({ get: ["layouts", "war"] }, function(list){
 				var $ntable = $("<tbody/>");
 				list.forEach(function(id){
 					if (id in rows) {
@@ -74,7 +74,7 @@ switch (window.location.pathname.toLowerCase()) {
 					}
 				});
 				$ntable.replaceAll($table).show();
-			});
+			});*/
 		});
 		
 		break;
@@ -88,7 +88,7 @@ switch (window.location.pathname.toLowerCase()) {
 	case "/technology_purchase.asp":
 	case "/infrastructurebuysell.asp":
 	case "/militarybuysell.asp": {
-		chrome.extension.sendRequest({ set: [cnx.ver, "nation_data", "isStale"], val: true });
+		chrome.extension.sendRequest({ set: [cnx.edn, "nation_data", "isStale"], val: true });
 		break;
 	}
 }

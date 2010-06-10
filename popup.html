@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html>
 	<body>
-		<input type="text" id="foo">
+		<input type="text"> <button>Update layout</button>
 		
-		<script src="jquery.js"></script>
-		<script></script>
+		<script src="scripts/jquery.js"></script>
+		<script>
+		var cnx = chrome.extension.getBackgroundPage().cnx;
+		$("button").click(function(){
+			cnx.data.set([cnx.page.edn, "layout"], $("input").val());
+			chrome.tabs.sendRequest(cnx.tab.id, "updatelayout");
+		});
+		</script>
 	</body>
 </html>

@@ -18,7 +18,7 @@
 		"run_at": "document_start"
 	}, {
 		"matches": ["http://*.cybernations.net/*"],
-		"js": ["jquery.js", "cs.js"],
+		"js": ["scripts/jquery.js", "scripts/contentscript.js"],
 		"run_at": "document_end"
 	}],
 	"permissions": ["tabs"],

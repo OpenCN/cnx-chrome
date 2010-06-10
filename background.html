@@ -1,11 +1,11 @@
-<script src="jquery.js"></script>
+<script src="scripts/jquery.js"></script>
 <script src="scripts/utils.js"></script>
 <script src="data/defaults.js"></script>
 <script>
 var cnx = {
 	data: {
-		layouts: JSON.parse(utils.getFile("data/layouts.json")),
-		rows: JSON.parse(utils.getFile("data/rows.json")),
+		layouts: utils.getJSON("data/layouts.json"),
+		rows: utils.getJSON("data/rows.json"),
 		se: JSON.parse(localStorage.se),
 		te: JSON.parse(localStorage.te),
 		get: function(path){

@@ -1,11 +1,11 @@
 (function(localStorage){
 
-var v = localStorage.v / 1;
+var ver = localStorage.ver / 1;
 
-if (!v) {
-	localStorage.se = localStorage.te = '{"nation_data":{"date":0, "isStale":true}}';
+if (!ver) {
+	localStorage.se = localStorage.te = '{"layout":"", "nation_data":{"date":0, "isStale":true}}';
 }
 
-localStorage.v = 1;
+localStorage.ver = 1;
 
 })(this.localStorage);
