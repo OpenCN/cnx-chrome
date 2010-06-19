@@ -19,8 +19,10 @@ var cnx = {
 			obj[last] = val;
 			
 			if (first === "se" || first === "te") { localStorage[first] = JSON.stringify(cnx.data[first]); }
-		}
-	}
+		},
+		modifiers: {}
+	},
+	calc: {}
 };
 
 chrome.extension.onRequest.addListener(function(req, sender, send){
@@ -40,3 +42,4 @@ chrome.tabs.onUpdated.addListener(function(id, changeinfo, tab){
 	}
 });
 </script>
+<script src="data/modifiers.js"></script>
