@@ -1,8 +1,8 @@
 (function(window, $, chrome, undefined){
 
 var cnx = {
-	id: (($("a[data-popupmenu='popmenu3']").attr("href") || "").match(/\d+$/) || "")[0],
-	edn: window.location.hostname === "www.cybernations.net" ? "se" : "te"
+	edn: window.location.hostname === "www.cybernations.net" ? "se" : "te",
+	id: (($("a[data-popupmenu='popmenu3']").attr("href") || "").match(/\d+$/) || "")[0]
 };
 
 switch (window.location.pathname.toLowerCase()) {
@@ -34,10 +34,11 @@ switch (window.location.pathname.toLowerCase()) {
 			var data = {
 				date: Date.now(),
 				isStale: false,
+				edn: cnx.edn,
 				id: cnx.id,
 				ruler: rows.ruler.txt,
 				name: rows.name.txt,
-				gov: rows.gov.txt.match(/^(.+?)\s/)[1],
+				gov: rows.gov.txt.match(/^(.+)\s-/)[1],
 				wonders: rows.wonders.txt !== "No national wonders." ? rows.wonders.txt.split(", ") : [],
 				
 				improvements: rows.improvements.txt.split(", ").reduce(function(pre, cur){

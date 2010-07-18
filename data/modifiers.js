@@ -1,4 +1,4 @@
-(function(modifiers){
+(function(){
 
 function hasResource(name, effect) {
 	return function(data){ return name in data.resources && effect; };
@@ -6,11 +6,43 @@ function hasResource(name, effect) {
 
 function forEachResource(resources, effect) {
 	return function(data){
-		return items.reduce(function(prev, cur){ return prev + (cur in data.resources); }, 0) * effect;
+		return resources.reduce(function(prev, cur){ return prev + (cur in data.resources); }, 0) * effect;
 	};
 }
 
-modifiers.resources = {
+var modifiers = {
+	/* governments */
+	"Anarchy": {
+		
+	}, "Capitalist": {
+		infra_cost: -0.05,
+		land: +0.05
+	}, "Communist": {
+		land: +0.05
+	}, "Democracy": {
+		happiness: +1
+	}, "Dictatorship": {
+		infra_cost: -0.05
+	}, "Federal Government": {
+		infra_cost: -0.05
+	}, "Monarchy": {
+		happiness: +1,
+		infra_cost: -0.05,
+		land: +0.05
+	}, "Republic": {
+		infra_cost: -0.05,
+		land: +0.05
+	}, "Revolutionary Government": {
+		happiness: +1,
+		infra_cost: -0.05
+	}, "Totalitarian State": {
+		happiness: +1,
+		land: +0.05
+	}, "Transitional": {
+		land: +0.05
+	},
+	
+	/* resources */
 	"Affluent Population": {
 		citizens: +0.05
 	}, "Aluminum": {
@@ -26,7 +58,7 @@ modifiers.resources = {
 	}, "Beer": {
 		happiness: +2
 	}, "Calcium": {
-		income: forEachResource(["Furs", "Rubber", "Spices", "Wine"], +3)
+		cash: forEachResource(["Furs", "Rubber", "Spices", "Wine"], +3)
 	}, "Cattle": {
 		citizens: +0.05
 	}, "Coal": {
@@ -41,12 +73,12 @@ modifiers.resources = {
 	}, "Fish": {
 		citizens: +0.08
 	}, "Furs": {
-		income: +3.5
+		cash: +3.5
 	}, "Gems": {
 		happiness: +2.5,
-		income: +1.5
+		cash: +1.5
 	}, "Gold":{
-		income: +3
+		cash: +3
 	}, "Iron": {
 		infra_bills: -0.10,
 		infra_cost: -0.05
@@ -66,21 +98,21 @@ modifiers.resources = {
 		citizens: +0.035
 	}, "Potassium": {
 		happiness: +3,
-		income: forEachResource(["Affluent Population", "Scholars"], +3)
+		cash: forEachResource(["Affluent Population", "Scholars"], +3)
 	}, "Radiation Cleanup": {
 		environment: -1
 	}, "Radon": {
-		income: forEachResource(["Gold", "Lead", "Uranium", "Water"], +3)
+		cash: forEachResource(["Gold", "Lead", "Uranium", "Water"], +3)
 	}, "Rubber": {
 		infra_cost: -0.03,
 		land: +0.20
 	}, "Scholars": {
-		income: +3
+		cash: +3
 	}, "Silicon": {
-		income: forEachResource(["Furs", "Gems", "Rubber", "Silver"], +3)
+		cash: forEachResource(["Furs", "Gems", "Rubber", "Silver"], +3)
 	}, "Silver": {
 		happiness: +2,
-		income: +2
+		cash: +2
 	}, "Sodium": {
 		happiness: forEachResource(["Beer", "Fast Food"], +2)
 	}, "Spices": {
@@ -92,7 +124,7 @@ modifiers.resources = {
 		citizens: +0.03,
 		happiness: +2
 	}, "Titanium": {
-		income: forEachResource(["Coal", "Gold", "Lead", "Oil"], +3)
+		cash: forEachResource(["Coal", "Gold", "Lead", "Oil"], +3)
 	}, "Uranium": {
 		infra_bills: -0.03
 	}, "Water": {
@@ -102,12 +134,11 @@ modifiers.resources = {
 		citizens: +0.08
 	}, "Wine": {
 		happiness: +3
-	}
-};
-
-modifiers.improvements = {
+	},
+	
+	/* improvements */
 	"Bank": {
-		income_percent: +0.07
+		income: +0.07
 	}, "Border Wall": {
 		citizens: -0.02,
 		environment: -1,
@@ -117,34 +148,33 @@ modifiers.improvements = {
 	}, "Clinic": {
 		citizens: +0.02
 	}, "Factory": {
-		infra_cost: -0.08
+		infra_cost: function(data){ return data.wonders.indexOf("Scientific Development Center") === -1 ? -0.08 : -0.10; }
 	}, "Foreign Ministry": {
-		income_percent: +0.05
+		income: +0.05
 	}, "Guerrilla Camp": {
-		income_percent: -0.08
+		income: -0.08
 	}, "Harbor": {
-		income_percent: +0.01
+		income: +0.01
 	}, "Hospital": {
 		citizens: +0.06
 	}, "Intelligence Agency": {
-		
+		happiness: function(data){ return data.tax > 23 ? +1 : 0; }
 	}, "Labor Camp": {
 		happiness: -1,
-		infra_bills: -0.1
+		infra_bills: -0.10
 	}, "Police Headquarters": {
 		happiness: +2
 	}, "School": {
-		income_percent: +0.05
+		income: +0.05
 	}, "Stadium": {
 		happiness: +3
 	}, "University": {
-		income_percent: +0.08
-	}
-};
+		income: function(data){ return data.wonders.indexOf("Scientific Development Center") === -1 ? +0.08 : +0.10; }
+	},
 	
-modifiers.wonders = {
+	/* wonders */
 	"Agriculture Development Program": {
-		income: +2,
+		cash: +2,
 		land: +0.15
 	}, "Disaster Relief Agency": {
 		citizens: +0.03
@@ -154,9 +184,13 @@ modifiers.wonders = {
 		happiness: +5
 	}, "Great University": {
 		happiness: function(data){
-			var tech = data.tech - 200;
+			var tech = data.tech - 200, SDC = data.wonders.indexOf("Scientific Development Center") !== -1;
 			if (tech < 0) { tech = 0; }
-			if (tech > 2800) { tech = 2800; }
+			if (SDC && tech > 4800) {
+				tech = 4800;
+			} else if (!SDC && tech > 2800) {
+				tech = 2800;
+			}
 			return data.tech * +0.002;
 		}
 	}, "Internet": {
@@ -165,7 +199,7 @@ modifiers.wonders = {
 		infra_bills: -0.08,
 		infra_cost: -0.08
 	}, "Mining Industry Consortium": {
-		income: forEachResource(["Coal", "Lead", "Oil", "Uranium"], +2)
+		cash: forEachResource(["Coal", "Lead", "Oil", "Uranium"], +2)
 	}, "Movie Industry": {
 		happiness: +3
 	}, "National Environment Office": {
@@ -178,14 +212,12 @@ modifiers.wonders = {
 		happiness: +4
 	}, "Nuclear Power Plant": {
 		
-	}, "Scientific Development Center": {
-		
 	}, "Social Security System": {
 		
 	}, "Space Program": {
 		happiness: +3
 	}, "Stock Market": {
-		income: +10
+		cash: +10
 	}, "Universal Health Care": {
 		citizens: +0.03,
 		happiness: +2
@@ -194,4 +226,27 @@ modifiers.wonders = {
 	}
 };
 
-})(cnx.data.modifiers);
+var improvementNames = {
+	"Bank": "Banks",
+	"Border Wall": "Border Walls",
+	"Church": "Churches",
+	"Clinic": "Clinics",
+	"Factory": "Factories",
+	"Foreign Ministry": "Foreign Ministries",
+	"Guerrilla Camp": "Guerrilla Camps",
+	"Harbor": "Harbors",
+	"Hospital": "Hospitals",
+	"Intelligence Agency": "Intelligence Agencies",
+	"Labor Camp": "Labor Camps",
+	"Police Headquarters": "Police Headquarters",
+	"School": "Schools",
+	"Stadium": "Stadiums",
+	"University": "Universities"
+};
+for (var k in improvementNames) {
+	modifiers[improvementNames[k]] = modifiers[k];
+}
+
+cnx.data.modifiers = modifiers;
+
+})();
