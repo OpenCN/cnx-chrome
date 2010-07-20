@@ -11,6 +11,7 @@ $.extend($D.prototype, {
 			if (key in obj) {
 				var effect = obj[key];
 				effect = $.isFunction(effect) ? effect(this) : effect;
+
 				if (grw.indexOf(name) !== -1) {
 					total *= 1 + effect;
 				} else if (name in improvements) {
@@ -19,7 +20,7 @@ $.extend($D.prototype, {
 			}
 		}
 		
-		if (key === "income_percent") {
+		if (key === "income") {
 			total *= this.edn === "te" ? 1.5 : 1;
 			total *= this.tax;
 		}
@@ -56,5 +57,47 @@ $.extend($D.prototype, {
 		}
 		
 		return ((infraModifier * infra) + 500) * this.getmodifier("infra_cost");
+	},
+	modify: function(name, amount, count){
+		count = count || 1;
+		
+		switch (name) {
+			case "happiness": {
+				var change = count * amount * (1 - ((this.environment - 1) / 100));
+				this.citizen_tax += (2 * this.getmodifier("income")) * change;
+				this.happiness += change;
+				break;
+			}
+			case "citizens": {
+				break;
+			}
+			case "environment": {
+				break;
+			}
+			case "cash": {
+				this.citizen_tax += count * amount * this.getmodifier("income");
+				break;
+			}
+			case "income": {
+				break;
+			}
+		}
+		
+		return this;
+	},
+	difference: function(name, original){
+		original = original || cnx.data[this.edn].nation_data;
+		
+		switch (name) {
+			case "income": {
+				return Math.round((this.citizen_tax * this.citizens) - (original.citizen_tax * original.citizens));
+			}
+			case "citizens": {
+				return this.citizens - original.citizens;
+			}
+			case "land": {
+				return this.land.total - original.land.total;
+			}
+		}
 	}
 });

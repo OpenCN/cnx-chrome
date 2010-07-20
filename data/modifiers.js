@@ -158,7 +158,7 @@ var modifiers = {
 	}, "Hospital": {
 		citizens: +0.06
 	}, "Intelligence Agency": {
-		happiness: function(data){ return data.tax > 23 ? +1 : 0; }
+		happiness: function(data){ return data.tax > 0.23 ? +1 : 0; }
 	}, "Labor Camp": {
 		happiness: -1,
 		infra_bills: -0.10
