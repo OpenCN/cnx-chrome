@@ -1,5 +1,5 @@
 function $D(data) {
-	$.extend(this, data);
+	$.extend(true, this, data);
 }
 
 $.extend($D.prototype, {

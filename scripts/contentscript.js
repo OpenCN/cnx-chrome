@@ -7,8 +7,8 @@ var cnx = {
 
 switch (window.location.pathname.toLowerCase()) {
 	case "/nation_drill_display.asp": {
-		if (!(RegExp("nation_id=" + cnx.id, "i")).test(window.location.search)) {
-			$(".shadetabs + table > tbody").show();
+		if (!RegExp("nation_id=" + cnx.id, "i").test(window.location.search)) {
+			$(".shadetabs + table > tbody").css("display", "table-row-group");
 			break;
 		}
 		
@@ -22,7 +22,7 @@ switch (window.location.pathname.toLowerCase()) {
 				if (row.is === k.replace(/\s/g, "") || k.indexOf(row.has) !== -1) {
 					row.txt = txt;
 					row.html = html;
-					row.td = $tr[trp];
+					row.tr = $tr[trp];
 					rows[id] = row;
 					trp++;
 				}
@@ -64,26 +64,47 @@ switch (window.location.pathname.toLowerCase()) {
 			
 			chrome.extension.sendRequest({ set: [cnx.edn, "nation_data"], val: data });
 			
-			/*** display data ***/
-			/*chrome.extension.sendRequest({ get: ["layouts", "war"] }, function(list){
-				var $ntable = $("<tbody/>");
-				list.forEach(function(id){
+			/*** display table ***/
+			chrome.extension.sendRequest({ get: "layout", edn: cnx.edn }, updateLayout);
+		});
+		
+		chrome.extension.onRequest.addListener(function(req, sender, reply){
+			("layout" in req) && updateLayout(req.layout);
+			reply(null);
+		});
+		
+		function updateLayout(layout) {
+			var $newtable = $("<tbody/>"), rows = cnx.rows;
+			
+			if (/extended=1/i.test(window.location.search)) {
+				layout = null;
+			}
+			
+			if (!layout) {
+				$.each(rows, function(k, row){
+					$(row.tr).appendTo($newtable);
+				});
+			} else {
+				layout.forEach(function(id){
 					if (id in rows) {
-						$ntable.append(rows[id].td);
+						$(rows[id].tr).appendTo($newtable);
 					} else {
-						$ntable.append('<tr><td colspan="2" style="color:white;background-color:navy"><b><span style="opacity:0">_</span>:. ' + id + '</b></td></tr>');
+						$newtable.append('<tr><td colspan="2" style="color:white;background-color:navy"><b><span style="opacity:0">_</span>:. ' + id + '</b></td></tr>');
 					}
 				});
-				$ntable.replaceAll($table).show();
-			});*/
-		});
+			}
+			cnx.$nationtable = $newtable.replaceAll(".shadetabs + table > tbody").css("display", "table-row-group");
+		}
 		
 		break;
 	}
 	
 	case "/improvements_purchase.asp":
 	case "/national_wonders_purchase.asp": {
-		
+		$("#table17"); // disband
+		$("#table3 > tbody > tr > td:eq(0) > input").mouseover(function(){
+			var modifier = this.value;
+		});
 	}
 	
 	case "/technology_purchase.asp":

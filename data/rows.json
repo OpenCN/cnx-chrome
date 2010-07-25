@@ -76,6 +76,6 @@
 	"total_taxes": { "is": "TotalIncomeTaxesCollected:", "name": "Total Taxes Collected" },
 	"total_expenses": { "is": "TotalExpensesOverTime:", "name": "Total Expenses" },
 	"total_bills": { "is": "BillsPaid:PurchasesOverTime:", "name": "Total Bills Paid" },
-	"cash": { "has": "Available:", "name": "Cash Available" },
-	"total_purchases": { "has": "$", "name": "Total Purchases" }
+	"total_purchases": { "has": "$", "name": "Total Purchases" },
+	"cash": { "has": "Available:", "name": "Cash Available" }
 }

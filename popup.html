@@ -1,15 +1,59 @@
 <!DOCTYPE html>
 <html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="css/popup.css">
+		<style>
+		</style>
+	</head>
 	<body>
-		<input type="text"> <button>Update layout</button>
+		<ul id="tabs">
+			<li class="selected">Info</li><li>Options</li><li>Foo</li>
+		</ul>
+		
+		<div id="panels">
+			<div id="info" class="selected">
+				<ul id="info-tabs">
+					<li class="selected">Effects</li><li>Messages</li><li>Version</li>
+				</ul>
+				
+				<div id="info-panels">
+					<div class="selected">
+						<fieldset><legend>Cash effect</legend>
+							<p><input type="text"> $:</p>
+							<p>Current tax (per citizen/day):</p>
+						</fieldset>
+						
+						<fieldset><legend>Happiness effect</legend>
+							<p><input type="text"> happiness:</p>
+							<p>Current happiness:</p>
+						</fieldset>
+						
+						<fieldset><legend>Environment effect</legend>
+							<p><input type="text"> environment:</p>
+							<p>Current environment:</p>
+							<p>Best possible environment:</p>
+						</fieldset>
+					</div>
+					
+					<div><p>Hi!</p></div>
+					
+					<div>
+						<p>cnx: ??</p>
+						<p>cnx-firefox: ??</p>
+						<p>cnx-chrome: 0.1.0.0</p>
+					</div>
+				</div>
+			</div>
+			
+			<div id="options">
+				<p>
+					<label for="options-layout">Layout</label>
+					<select id="options-layout"><option value=""></option></select>
+				</p>
+			</div>
+		</div>
 		
 		<script src="scripts/jquery.js"></script>
-		<script>
-		var cnx = chrome.extension.getBackgroundPage().cnx;
-		$("button").click(function(){
-			cnx.data.set([cnx.page.edn, "layout"], $("input").val());
-			chrome.tabs.sendRequest(cnx.tab.id, "updatelayout");
-		});
-		</script>
+		<script src="scripts/popup.js"></script>
 	</body>
 </html>
