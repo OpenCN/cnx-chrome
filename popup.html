@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="css/popup.css">
+		<link rel="stylesheet" href="css/popup.css">
 		<style>
 		</style>
 	</head>
@@ -17,21 +17,21 @@
 				</ul>
 				
 				<div id="info-panels">
-					<div class="selected">
-						<fieldset><legend>Cash effect</legend>
-							<p><input type="text"> $:</p>
-							<p>Current tax (per citizen/day):</p>
+					<div class="selected" id="info-effects">
+						<fieldset id="info-effects-cash"><legend>Cash</legend>
+							<p><input type="text" value="1"> $: <span>?</span></p>
+							<p>Current tax (per citizen/day): <span>?</span></p>
 						</fieldset>
 						
-						<fieldset><legend>Happiness effect</legend>
-							<p><input type="text"> happiness:</p>
-							<p>Current happiness:</p>
+						<fieldset id="info-effects-happiness"><legend>Happiness</legend>
+							<p><input type="text" value="1"> happiness: <span>?</span></p>
+							<p>Current happiness: <span>?</span></p>
 						</fieldset>
 						
-						<fieldset><legend>Environment effect</legend>
-							<p><input type="text"> environment:</p>
-							<p>Current environment:</p>
-							<p>Best possible environment:</p>
+						<fieldset id="info-effects-environment"><legend>Environment</legend>
+							<p><input type="text" value="-1"> environment: <span>?</span></p>
+							<p>Current environment: <span>?</span></p>
+							<p>Best possible environment: <span>?</span></p>
 						</fieldset>
 					</div>
 					
@@ -39,6 +39,7 @@
 					
 					<div>
 						<p>cnx: ??</p>
+						<p>cnx-core: ??</p>
 						<p>cnx-firefox: ??</p>
 						<p>cnx-chrome: 0.1.0.0</p>
 					</div>
@@ -48,12 +49,12 @@
 			<div id="options">
 				<p>
 					<label for="options-layout">Layout</label>
-					<select id="options-layout"><option value=""></option></select>
+					<select id="options-layout"><option value="">normal</option></select>
 				</p>
 			</div>
 		</div>
 		
-		<script src="scripts/jquery.js"></script>
-		<script src="scripts/popup.js"></script>
+		<script src="js/jquery.js"></script>
+		<script src="js/popup.js"></script>
 	</body>
 </html>

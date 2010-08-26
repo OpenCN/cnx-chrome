@@ -17,7 +17,7 @@
 		"run_at": "document_start"
 	}, {
 		"matches": ["http://www.cybernations.net/*", "http://tournament.cybernations.net/*"],
-		"js": ["scripts/jquery.js", "scripts/contentscript.js"],
+		"js": ["js/jquery.js", "js/contentscript.js"],
 		"run_at": "document_end"
 	}],
 	"permissions": ["tabs"],

@@ -28,11 +28,11 @@ p {
 }
 
 input[type="text"] {
+	-webkit-appearance: none;
 	border: 1px dotted #a9a9a9;
 	height: 12px;
 	outline: 0;
 	width: 30px;
-	-webkit-appearance: none;
 }
 
 
@@ -45,6 +45,7 @@ input[type="text"] {
 	margin-bottom: 2px;
 }
 #tabs > li, #info-tabs > li {
+	-webkit-user-select: none;
 	color: #a9a9a9;
 	cursor: pointer;
 	display: inline-block;

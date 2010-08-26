@@ -1,5 +1,5 @@
 function $D(data) {
-	$.extend(true, this, data);
+	$.extend(true, this, typeof data === "string" ? cnx.data[data].nation_data : data);
 }
 
 $.extend($D.prototype, {

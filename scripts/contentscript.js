@@ -1,13 +1,13 @@
 (function(window, $, chrome, undefined){
 
-var cnx = {
+var page = {
 	edn: window.location.hostname === "www.cybernations.net" ? "se" : "te",
 	id: (($("a[data-popupmenu='popmenu3']").attr("href") || "").match(/\d+$/) || "")[0]
 };
 
 switch (window.location.pathname.toLowerCase()) {
 	case "/nation_drill_display.asp": {
-		if (!RegExp("nation_id=" + cnx.id, "i").test(window.location.search)) {
+		if (!RegExp("nation_id=" + page.id, "i").test(window.location.search)) {
 			$(".shadetabs + table > tbody").css("display", "table-row-group");
 			break;
 		}
@@ -28,14 +28,14 @@ switch (window.location.pathname.toLowerCase()) {
 				}
 			});
 			
-			cnx.rows = rows;
+			page.rows = rows;
 			
 			/*** save data ***/
 			var data = {
 				date: Date.now(),
 				isStale: false,
-				edn: cnx.edn,
-				id: cnx.id,
+				edn: page.edn,
+				id: page.id,
 				ruler: rows.ruler.txt,
 				name: rows.name.txt,
 				gov: rows.gov.txt.match(/^(.+)\s-/)[1],
@@ -62,10 +62,10 @@ switch (window.location.pathname.toLowerCase()) {
 			
 			data.tax /= 100;
 			
-			chrome.extension.sendRequest({ set: [cnx.edn, "nation_data"], val: data });
+			chrome.extension.sendRequest({ set: [page.edn, "nation_data"], val: data });
 			
 			/*** display table ***/
-			chrome.extension.sendRequest({ get: "layout", edn: cnx.edn }, updateLayout);
+			chrome.extension.sendRequest({ get: "layout", edn: page.edn }, updateLayout);
 		});
 		
 		chrome.extension.onRequest.addListener(function(req, sender, reply){
@@ -74,7 +74,7 @@ switch (window.location.pathname.toLowerCase()) {
 		});
 		
 		function updateLayout(layout) {
-			var $newtable = $("<tbody/>"), rows = cnx.rows;
+			var $newtable = $("<tbody/>"), rows = page.rows;
 			
 			if (/extended=1/i.test(window.location.search)) {
 				layout = null;
@@ -93,7 +93,7 @@ switch (window.location.pathname.toLowerCase()) {
 					}
 				});
 			}
-			cnx.$nationtable = $newtable.replaceAll(".shadetabs + table > tbody").css("display", "table-row-group");
+			page.$nationtable = $newtable.replaceAll(".shadetabs + table > tbody").css("display", "table-row-group");
 		}
 		
 		break;
@@ -110,9 +110,9 @@ switch (window.location.pathname.toLowerCase()) {
 	case "/technology_purchase.asp":
 	case "/infrastructurebuysell.asp":
 	case "/militarybuysell.asp": {
-		chrome.extension.sendRequest({ set: [cnx.edn, "nation_data", "isStale"], val: true });
+		chrome.extension.sendRequest({ set: [page.edn, "nation_data", "isStale"], val: true });
 		break;
 	}
 }
 
-})(this, this.$, this.chrome);
+})(this, this.jQuery, this.chrome);
