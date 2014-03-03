@@ -1,4 +1,6 @@
-CNExtend - A chrome browser extension for Cybernations
+CNExtend - Chrome 
 ==========
+
+A Google Chrome browser extension for Cybernations
 
 This is an alpha build.
